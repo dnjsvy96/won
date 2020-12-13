@@ -4,13 +4,13 @@
 #include <ESP8266mDNS.h>
 #include <Servo.h>
 
-const char* ssid = "KT_GiGA_2G_wons";
-const char* password = "Dnjsvy0221";
+const char* ssid = "your-wifi-id";
+const char* password = "your-wifi-password";
 
 ESP8266WebServer server(80);
 Servo feedServo; 
 
-String s = "<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width=device-width, user-scalable=no\"></head><body><br><input type=\"button\" name=\"b1\" value=\"ON\" onclick=\"location.href='/on'\" style=\"width:100%;height:70px;font-weight:bold;font-size:1em\"></body></html>";
+String s = "<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width=device-width, user-scalable=no\"></head><body><br><input type=\"button\" name=\"b1\" value=\"ON\" onclick=\"location.href='/on'\" style=\"width:100%;height:70px;font-weight:bold;font-size:1em\"><br/><input type=\"button\" name=\"b1\" value=\"OFF\" onclick=\"location.href='/off'\" style=\"width:100%;height:80px;font-weight:bold;font-size:1em\"></body></html>";
 
 void handleRoot() { 
   server.send(200, "text/html", s); 
@@ -56,13 +56,18 @@ void setup(void){
   //on
   server.on("/on", [](){    
     feedServo.write(180);
-    delay(1000); 
-    feedServo.write(0);
-    delay(1000); 
+    delay(1000);
     Serial.println("POWER ON");
     server.send(200, "text/html", s);
   });
 
+  //off
+  server.on("/off", [](){
+    feedServo.write(0);
+    delay(1000); 
+    Serial.println("POWER OFF");
+    server.send(200, "text/html", s);
+  });
 
   server.onNotFound(handleNotFound);
 
