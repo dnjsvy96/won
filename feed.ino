@@ -4,8 +4,8 @@
 #include <ESP8266mDNS.h>
 #include <Servo.h>
 
-const char* ssid = "KT_GiGA_2G_wons";
-const char* password = "Dnjsvy0221";
+const char* ssid = "your-wifi-id";
+const char* password = "your-wifi-password";
 
 ESP8266WebServer server(80);
 Servo feedServo; 
@@ -56,17 +56,13 @@ void setup(void){
   //on
   server.on("/on", [](){    
     feedServo.write(180);
-    delay(1000); 
-    feedServo.write(0);
-    delay(1000); 
+    delay(1000);
     Serial.println("POWER ON");
     server.send(200, "text/html", s);
   });
 
   //off
   server.on("/off", [](){
-    feedServo.write(180);
-    delay(1000); 
     feedServo.write(0);
     delay(1000); 
     Serial.println("POWER OFF");
